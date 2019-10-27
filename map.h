@@ -21,8 +21,8 @@ using namespace std;
 #define NORMAL_ROW 16
 #define NORMAL_COLUMN 16
 
-#define HARD_ROW 30
-#define HARD_COLUMN 16
+#define HARD_ROW 16
+#define HARD_COLUMN 30
 
 class Map: public QObject
 {
@@ -42,6 +42,9 @@ public:
     void showMap();
     void playGame();
     void setMap(vector<vector<int>> &v);
+    int getRow();
+    int getColumn();
+    int getBombCount();
 private:
     void setBomb();//放置地雷
     void countBomb();//对地图进行处理，清算雷每个格子周围雷的数量

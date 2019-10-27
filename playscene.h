@@ -3,6 +3,9 @@
 
 #include <QMainWindow>
 #include <QObject>
+#include<QLabel>
+#include<QPushButton>
+#include<QPixmap>
 #include <QMenuBar>
 #include<QMessageBox>
 #include"map.h"
@@ -14,8 +17,8 @@ public:
     playScene(int m_level);
     void createMap();//生成地图
     void flip();//翻动格子 -- 包括周围的格子
-    bool isSucceeded();//判断是否胜利
-    void mousePressEvent(QMouseEvent *e);//重写鼠标事件 -- 右键标识红旗
+//    bool isSucceeded();//判断是否胜利
+//    void mousePressEvent(QMouseEvent *e);//重写鼠标事件 -- 右键标识红旗
 private:
     int level;//用于接受游戏难度设置
     Map *map;

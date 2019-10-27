@@ -2,6 +2,9 @@
 
 playScene::playScene(int m_level)
 {
+    QPixmap tmp;
+    tmp.load(":/pics/0.png");
+    this->setMinimumSize((m_level+1)*12*tmp.width(),18*tmp.height());
     //初始化Level
     this->level = m_level;
     //初始化Map;
@@ -78,13 +81,51 @@ playScene::playScene(int m_level)
         }
     });
 
+    //生成地图
+    createMap();
+
 }
 
 void playScene::createMap()
 {
     //使用QLabel 生成底图
+    for(int i=0;i<map->getRow();i++)
+    {
+        for(int j=0;j<map->getColumn();j++)
+        {
+            QLabel *label = new QLabel(this);
+            //拼接文件名
+            QString picPath;
+            if(vMap[i][j]==-1)
+            {
+                picPath = ":/pics/-1.png";//炸弹
+            }
+            else{
+                picPath = QString(":/pics/%1.png").arg(QString::number(vMap[i][j]+1));  //空白底图或数字
+            }
+            //加载图片
+            QPixmap pix;
+            pix.load(picPath);
+            //label显示图片并设置大小等
+            label->setPixmap(pix);
+            label->setFixedSize(pix.width(),pix.height());
+            label->move((this->width()-pix.width()*map->getColumn())/2+j*pix.width(),(this->height()-pix.height()*map->getRow())/2+i*pix.height());
 
-    //使用QPushButton 生成覆盖图
+            //使用QPushButton 生成覆盖图
+            QPushButton *btn = new QPushButton(this);
+            QPixmap btnPix;
+            btnPix.load(":/pics/0.png");
+            btn->setIcon(btnPix);
+            btn->setFixedSize(btnPix.width(),btnPix.height());
+            btn->setIconSize(QSize(btnPix.width(),btnPix.height()));
+            btn->setStyleSheet("QPushButton{border:0}");
+            btn->move((this->width()-btnPix.width()*map->getColumn())/2+j*btnPix.width(),(this->height()-btnPix.height()*map->getRow())/2+i*btnPix.height());
+            //连接点击事件
+            connect(btn,&QPushButton::clicked,this,[=](){
+                btn->setIcon(QIcon(""));
+            });
+        }
+    }
 }
 
 void playScene::flip()

@@ -119,7 +119,6 @@ MainWindow::MainWindow(QWidget *parent)
         //连接游戏界面发送的showMain 信号 -- 返回主界面
         connect(playscene,&playScene::showMain,this,[=](){
             QTimer::singleShot(300,this,[=](){
-                this->setGeometry(playscene->geometry());//设置位置大小等
                 //关闭游戏界面
                 playscene->close();
                 delete playscene;
@@ -135,7 +134,7 @@ MainWindow::MainWindow(QWidget *parent)
         QTimer::singleShot(200,this,[=](){
             this->hide();
             //进入游戏界面
-            playscene->setGeometry(this->geometry());//保持窗口位置一定
+            playscene->setGeometry(this->x(),this->y(),playscene->width(),playscene->height());
             playscene->show();
         });
 

@@ -31,36 +31,10 @@ Map::Map()
     }
 }
 
-Map::Map(int level_row,int level_column)//1 = easy 2 = normal 3 = hard
-{
-    //初始化数据
-    this->row = level_row;
-    this->column = level_column;
-    switch (level_row) {
-    case EASY_ROW:this->bombNum = EASY; break;
-    case NORMAL_ROW:this->bombNum = NORMAL; break;
-    case HARD_ROW:this->bombNum = HARD; break;
-    }
-    //动态分配内存
-    map = new int*[row];
-    if (map == NULL)
-    {
-        cout << "初始化失败" << endl;
-        return;
-    }
-    for (int i = 0; i < row; i++)
-    {
-        map[i] = new int[column]{ 0 };//数值初始化
-        if (map[i] == NULL)
-        {
-            cout << "初始化失败" << endl;
-            return;
-        }
-    }
-}
 
 Map::Map(int level)//1 = easy 2 = normal 3 = hard
 {
+
     //初始化数据
     switch(level)
     {
@@ -194,10 +168,10 @@ void Map::setMap(vector<vector<int> > &v)
 {
 
     //先假设都是9*9
-    for(int i=0;i<9;i++)
+    for(int i=0;i<this->row;i++)
     {
         vector<int> temp;
-        for(int j =0;j<9;j++)
+        for(int j =0;j<this->column;j++)
         {
             temp.push_back(map[i][j]);
         }
@@ -212,4 +186,17 @@ void Map::playGame()
     if (map[x][y] == -1) {
         cout << "你输了" << endl;
     }
+}
+
+int Map::getRow()
+{
+    return this->row;
+}
+int Map::getColumn()
+{
+    return this->column;
+}
+int Map::getBombCount()
+{
+    return this->bombNum;
 }
