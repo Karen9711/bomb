@@ -14,6 +14,7 @@ playScene::playScene(int m_level)
     //初始化游戏维护的vMap;
     map->setMap(this->vMap);
 
+
     //设置菜单栏
     QMenuBar *menu = menuBar();
     QMenu *choices = menu->addMenu(QString::fromLocal8Bit("选项"));
@@ -91,9 +92,13 @@ void playScene::createMap()
     //使用QLabel 生成底图
     for(int i=0;i<map->getRow();i++)
     {
+        vector<QLabel*> labeltmp;
+        vector<Cell*> btntmp;
         for(int j=0;j<map->getColumn();j++)
         {
+
             QLabel *label = new QLabel(this);
+            labeltmp.push_back(label);
             //拼接文件名
             QString picPath;
             if(vMap[i][j]==-1)
@@ -111,24 +116,30 @@ void playScene::createMap()
             label->setFixedSize(pix.width(),pix.height());
             label->move((this->width()-pix.width()*map->getColumn())/2+j*pix.width(),(this->height()-pix.height()*map->getRow())/2+i*pix.height());
 
-            //使用QPushButton 生成覆盖图
-            QPushButton *btn = new QPushButton(this);
+            //使用自定义 Cell 生成覆盖图
+            Cell *cell = new Cell(i,j);
+            cell->setParent(this);
+            btntmp.push_back(cell);
             QPixmap btnPix;
             btnPix.load(":/pics/0.png");
-            btn->setIcon(btnPix);
-            btn->setFixedSize(btnPix.width(),btnPix.height());
-            btn->setIconSize(QSize(btnPix.width(),btnPix.height()));
-            btn->setStyleSheet("QPushButton{border:0}");
-            btn->move((this->width()-btnPix.width()*map->getColumn())/2+j*btnPix.width(),(this->height()-btnPix.height()*map->getRow())/2+i*btnPix.height());
+            cell->move((this->width()-btnPix.width()*map->getColumn())/2+j*btnPix.width(),(this->height()-btnPix.height()*map->getRow())/2+i*btnPix.height());
             //连接点击事件
-            connect(btn,&QPushButton::clicked,this,[=](){
-                btn->setIcon(QIcon(""));
+            connect(cell,&QPushButton::clicked,this,[=](){
+                cell->setIcon(QIcon(""));
             });
         }
+        this->labelArray.push_back(labeltmp);
+        this->BtnArray.push_back(btntmp);
     }
 }
 
 void playScene::flip()
 {
+    //如果是格子中没有数字 == 继续反动周围八个格子 -- 反到有数字的格子即停止
+}
 
+bool playScene::isSucceeded()
+{
+    //所有的炸弹都被标记且其他格子都被翻开 -- 即胜利
+    return true;
 }
